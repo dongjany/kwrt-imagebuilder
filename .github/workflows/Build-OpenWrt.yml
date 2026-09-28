@@ -20,7 +20,7 @@ jobs:
       run: |
         curl -L -o imagebuilder.tar.zst https://dl.openwrt.ai/releases/25.12/targets/ramips/mt7620/kwrt-imagebuilder-ramips-mt7620.Linux-x86_64.tar.zst
         tar --use-compress-program=unzstd -xvf imagebuilder.tar.zst
-        mv istoreos-imagebuilder-* imagebuilder
+        mv kwrt-imagebuilder-* imagebuilder
 
     - name: SSH connect to Actions
       uses: P3TERX/ssh2actions@main
