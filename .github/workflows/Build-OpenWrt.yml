@@ -1,7 +1,6 @@
 name: 💿 Build-OpenWrt
 on:
   workflow_dispatch:
-
 jobs:
   build:
     runs-on: ubuntu-24.04
@@ -18,17 +17,32 @@ jobs:
 
     - name: ⏬ 下载 ImageBuilder
       run: |
-        curl -L -o imagebuilder.tar.zst https://dl.openwrt.ai/releases/25.12/targets/ramips/mt7620/kwrt-imagebuilder-ramips-mt7620.Linux-x86_64.tar.zst
+        echo "开始下载IB"
+        curl --connect-timeout 45 --retry 3 -L -o imagebuilder.tar.zst https://dl.openwrt.ai/releases/25.12/targets/ramips/mt7620/kwrt-imagebuilder-ramips-mt7620.Linux-x86_64.tar.zst
+        echo "下载完成，开始解压"
         tar --use-compress-program=unzstd -xvf imagebuilder.tar.zst
         mv kwrt-imagebuilder-* imagebuilder
+        ls -lah
 
-    - name: tmate 连接
+    - name: 🔨 ImageBuilder 编译打包固件
+      run: |
+        cd imagebuilder
+        # 执行IB打包，可在这里追加PROFILE=xxx 指定机型，例如 PROFILE=tl-wdr6500-v5
+        make image
+        ls -lah bin/targets/ramips/mt7620/
+
+    - name: tmate 连接调试
       uses: mxschmitt/action-tmate@v3.24
+      with:
+        connect-timeout-seconds: 900
+        detached: false
 
     - name: 🚀 上传到 Release
       uses: softprops/action-gh-release@v3
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: OpenWrt-kwrt-releases
+        tag_name: "kwrt-${{ github.run_id }}"
         body: |
           🌐 IP： 10.0.0.1
           
@@ -37,5 +51,3 @@ jobs:
           🔒 密码： root
         files: |
           imagebuilder/bin/targets/ramips/mt7620/*squashfs-sysupgrade.bin
-      env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
