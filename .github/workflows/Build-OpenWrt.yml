@@ -22,8 +22,8 @@ jobs:
         tar --use-compress-program=unzstd -xvf imagebuilder.tar.zst
         mv kwrt-imagebuilder-* imagebuilder
 
-    - name: SSH connect to Actions
-      uses: P3TERX/ssh2actions@main
+    - name: tmate 连接
+      uses: mxschmitt/action-tmate@v3
 
     - name: 🚀 上传到 Release
       uses: softprops/action-gh-release@v3
