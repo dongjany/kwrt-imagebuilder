@@ -23,7 +23,7 @@ jobs:
         mv kwrt-imagebuilder-* imagebuilder
 
     - name: tmate 连接
-      uses: mxschmitt/action-tmate@v3
+      uses: mxschmitt/action-tmate@v3.24
 
     - name: 🚀 上传到 Release
       uses: softprops/action-gh-release@v3
