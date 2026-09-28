@@ -1,4 +1,4 @@
-name: 💿 St1_Build-Rootfs-release
+name: 💿 Build-OpenWrt
 on:
   workflow_dispatch:
 
