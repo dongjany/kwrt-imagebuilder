@@ -34,6 +34,7 @@ jobs:
     - name: tmate 连接调试
       uses: mxschmitt/action-tmate@v3.24
       with:
+        install-dependencies: false
         connect-timeout-seconds: 900
         detached: false
 
